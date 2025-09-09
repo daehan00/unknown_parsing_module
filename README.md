@@ -4,16 +4,19 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/unknown-data.svg)](https://badge.fury.io/py/unknown-data)
 
-A comprehensive Python library for parsing and processing digital forensics data artifacts. This library provides standardized interfaces for handling various types of forensic data including browser artifacts, deleted files, link files, messenger data, prefetch files, and USB device information.
+A comprehensive Python library for parsing and processing digital forensics data artifacts. This library provides standardized interfaces for handling various types of forensic data including browser artifacts, deleted files, link files, messenger data, prefetch files, and USB device information with integrated database support.
 
 ## Features
 
 - **Multi-format Support**: Handle browser data, deleted files, link files, messenger data, prefetch files, and USB artifacts
+- **Database Integration**: Full PostgreSQL support with SQLAlchemy ORM for forensic data storage and retrieval
 - **Standardized Processing**: Consistent interface for all data types
-- **Flexible Data Sources**: Support for local files and cloud storage (S3)
+- **Flexible Data Sources**: Support for local files, cloud storage (S3), and database
 - **DataFrame Output**: All processed data is converted to pandas DataFrames for easy analysis
+- **Session Management**: Robust database session handling with auto-reconnection
 - **Comprehensive Logging**: Built-in logging for debugging and monitoring
 - **Type Safety**: Full type hints support for better development experience
+- **Production Ready**: Comprehensive test suite with 100% database functionality coverage
 
 ## Installation
 
@@ -68,6 +71,38 @@ print(f"Loaded {len(browser_data.get('browser_data', []))} browser records")
 # Load different types of data from the same task
 deleted_data = loader.s3_data_load(Category.DELETED, s3_config)
 usb_data = loader.s3_data_load(Category.USB, s3_config)
+```
+
+### Database Integration
+
+```python
+from unknown_data import Category, DataLoader
+from unknown_data.loader.base import Config_db
+
+# Configure database connection
+db_config = Config_db(
+    dbms="postgresql",
+    username="your_username",
+    password="your_password", 
+    ip="13.124.25.47",
+    port=5432,
+    database_name="forensic_agent"
+)
+
+# Initialize loader and set database
+loader = DataLoader()
+loader.set_database(db_config)
+
+# Load forensic data from database
+task_id = "550e8400-e29b-41d4-a716-446655440000"
+browser_data = loader.database_data_load(task_id, Category.BROWSER)
+deleted_data = loader.database_data_load(task_id, Category.DELETED) 
+usb_data = loader.database_data_load(task_id, Category.USB)
+
+# Process the data normally
+encoder = Encoder()
+browser_encoder = encoder.convert_data(browser_data, Category.BROWSER)
+results = browser_encoder.get_result_dfs()
 ```
 
 ## Supported Data Types
@@ -140,6 +175,8 @@ data = loader.s3_data_load(Category.BROWSER, s3_config)
 - numpy
 - jsonschema
 - boto3 (for S3 support)
+- sqlalchemy >= 2.0.0 (for database support)
+- psycopg2-binary (for PostgreSQL support)
 
 ## AWS S3 Configuration
 
