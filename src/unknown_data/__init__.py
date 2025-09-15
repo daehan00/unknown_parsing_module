@@ -4,7 +4,7 @@ from .core import Category, DataKeys, ResultDataFrame, ResultDataFrames, Logger,
 from .encoder import Encoder, BrowserDataEncoder, DeletedDataEncoder, LnkDataEncoder, MessengerEncoder, PrefetchEncoder, UsbDataEncoder
 from .loader import DataLoader
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 __all__ = [
     "Category",

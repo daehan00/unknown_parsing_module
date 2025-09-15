@@ -177,7 +177,7 @@ class BrowserDataEncoder(BaseDataEncoder):
         
         table_names = file.get("table_names")
         if not table_names:
-            self.logger.log(f"{file.get("file_name")} no data to process")
+            self.logger.log(f"{file.get('file_name')} no data to process")
             return
         
         file_name = file.get("file_name")

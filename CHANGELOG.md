@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-01-14
+
+### Fixed
+- **Critical Syntax Error**: Fixed f-string syntax error in `browser_encoder.py`
+  - Resolved unmatched parentheses issue in f-string on line 180
+  - Changed `f"{file.get("file_name")}"` to `f"{file.get('file_name')}"` for proper quote nesting
+  - Fixed production deployment failure that prevented package import
+  - Ensured compatibility with Python f-string syntax requirements
+
 ## [0.2.0] - 2025-01-09
 
 ### Added
